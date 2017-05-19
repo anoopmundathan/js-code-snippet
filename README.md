@@ -64,4 +64,87 @@ greet('hello', 'world'); >>> 'hello' 'world'
 greet('hello', 'world', 'hi'); >>> 'hello' 'world' 'hi'
 ```
 
+### piping - passing one function's output to another function's input
+```
+function add(a, b) {
+  return a + b;
+}
 
+function inc(c) {
+  return c + 11;
+}
+```
+* Method - 1
+```
+var res = add(10,20);
+var final = inc(res);
+console.log(final);
+```
+* Method - 2
+```
+var final = inc(add(10,20));
+console.log(final);
+```
+* Method - 3 - create a utility function pipe
+```
+function pipe(fn1, fn2) {
+  return function(a,b) {
+     return fn2(fn1(a,b));
+  }
+}
+
+var final = pipe(add, inc);
+console.log(final(1000,2000));
+```
+* Method - 4 - variable arguments in pipe function
+```
+function pipe() {
+  var param = Array.prototype.slice.call(arguments, 0);
+  return function(a,b) {
+    return param[1](param[0](a,b));
+  }
+}
+
+var result = pipe(add, inc);
+console.log(result(10,20));
+```
+* Method - 5 
+```
+function add(a, b, c, d) {
+  return a + b + c + d;
+}
+
+function multiply(m) {
+  return m * 2;
+}
+
+function divide(d) {
+  return d / 20;
+}
+
+function sub(s) {
+  return s - 1;
+}
+
+function _pipe(fn1, fn2) {
+  return function() {
+     var param = Array.prototype.slice.call(arguments, 0);
+     return fn2(fn1.apply(null, param));
+  }
+}
+
+// ES6 version
+const _pipe = (fn1, fn2) => (...args) => fn2(fn1(...args));
+
+function pipe() {
+  var fns = Array.prototype.slice.call(arguments, 0);
+  return fns.reduce(_pipe);
+}
+
+// ES6 version
+const pipe = (..fns) => fns.reduce(_pipe);
+
+var result = pipe(add, multiply, divide, sub);
+console.log(result);
+console.log(result(10,20,30,40));
+```
