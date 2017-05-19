@@ -47,3 +47,21 @@ function func(a, b) {
 console.log(func.call(null,5,6)); >>> output 11 - call takes individual arguments
 console.log(func.apply(null,[10,20])); >>> output 30 - apply takes array of arguments
 ```
+
+### Passing variable arguments
+* Example 1
+```
+function greet() { console.log(arguments); }
+
+greet('hello', 'world'); >>> [object Arguments] { 0: "hello", 1: "world"}
+greet('hello', 'world', 'hi'); >>> [object Arguments] { 0: "hello", 1: "world", 2: "hi"}
+```
+* Example 2  - in ES6 using rest & spread operator
+```
+const greet = (...args) => console.log(...args);
+
+greet('hello', 'world'); >>> 'hello' 'world'
+greet('hello', 'world', 'hi'); >>> 'hello' 'world' 'hi'
+```
+
+
