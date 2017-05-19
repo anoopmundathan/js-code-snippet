@@ -64,7 +64,7 @@ greet('hello', 'world'); >>> 'hello' 'world'
 greet('hello', 'world', 'hi'); >>> 'hello' 'world' 'hi'
 ```
 
-### piping - passing one function's output to another function's input
+### Piping - passing one function's output to another function's input
 ```
 function add(a, b) {
   return a + b;
@@ -147,4 +147,39 @@ const pipe = (..fns) => fns.reduce(_pipe);
 var result = pipe(add, multiply, divide, sub);
 console.log(result);
 console.log(result(10,20,30,40));
+```
+### Partial applications
+```
+function add(a) {
+  return a + 1;
+}
+
+function add(a, b) {
+  return a + b;
+}
+
+
+function add(a, b, c) {
+  return a + b + c;
+}
+
+
+function partial(fn) {
+  var param = Array.prototype.slice.call(arguments, 1);
+  return function() {
+      return fn.apply(null, param.concat(Array.prototype.slice.call(arguments,0)));
+  }
+}
+
+// ES6
+const partial = (fn, ...args) => fn.bind(null, ...args); 
+
+var res = partial(add);
+console.log(res(10, 30,40));
+
+res = partial(add, 3);
+console.log(res(10, 30));
+
+res = partial(add, 1, 2);
+console.log(res(10));
 ```
