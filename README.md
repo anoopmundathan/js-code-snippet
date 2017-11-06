@@ -16,7 +16,7 @@ function func() {
   console.log(this); 
 }
 func(); 
-output >>> Gloabl object 
+output >>> Global object 
 ```
 > Context in method
 ```
